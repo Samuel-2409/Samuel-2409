@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonGamer Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.293.0/dist/ionicons.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0a0a14;
+      --bg-deeper: #05050a;
+      --bg-surface: #11111a;
+      --neon-cyan: #00ffef;
+      --neon-pink: #ff007f;
+      --neon-purple: #bc13fe;
+      --neon-green: #39ff14;
+      --accent-orange: #ff6b35;
+      --text-primary: #e8e8f0;
+      --text-muted: #6b6b80;
+      --border-glow: rgba(0, 255, 239, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .bg-neon-pattern {
+      background-image: 
+        radial-gradient(ellipse 100% 60% at 50% -10%, rgba(0, 255, 239, 0.15), transparent),
+        radial-gradient(ellipse 80% 50% at 100% 100%, rgba(188, 19, 254, 0.12), transparent),
+        radial-gradient(ellipse 70% 40% at 0% 100%, rgba(255, 0, 127, 0.1), transparent);
+    }
+
+    .glow-text {
+      text-shadow: 
+        0 0 5px currentColor,
+        0 0 10px currentColor,
+        0 0 20px currentColor;
+    }
+
+    .neon-border {
+      box-shadow: 
+        0 0 20px rgba(0, 255, 239, 0.2),
+        0 0 40px rgba(188, 19, 254, 0.2),
+        0 0 60px rgba(255, 0, 127, 0.15);
+    }
+
+    .scanline::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+      );
+      pointer-events: none;
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out;
+    }
+
+    .cursor-pointer {
+      width: 30px;
+      height: 30px;
+    }
+
+    .btn-neon {
+      position: relative;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-neon-cyan {
+      background: linear-gradient(135deg, var(--neon-cyan), #00b8d9);
+      color: var(--bg-deeper);
+    }
+
+    .btn-neon-cyan:hover {
+      box-shadow: 0 0 30px rgba(0, 255, 239, 0.4), 0 0 60px rgba(0, 184, 217, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-neon-pink {
+      background: linear-gradient(135deg, var(--neon-pink), #e8005c);
+      color: var(--bg-deeper);
+    }
+
+    .btn-neon-pink:hover {
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.4), 0 0 60px rgba(232, 0, 92, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-neon-purple {
+      background: linear-gradient(135deg, var(--neon-purple), #9b2cfe);
+      color: var(--bg-deeper);
+    }
+
+    .btn-neon-purple:hover {
+      box-shadow: 0 0 30px rgba(188, 19, 254, 0.4), 0 0 60px rgba(155, 44, 254, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-neon-outline {
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .btn-neon-outline:hover {
+      background: var(--neon-cyan);
+      color: var(--bg-deeper);
+    }
+
+    .profile-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glow);
+      border-radius: 8px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--bg-surface), var(--bg-deeper));
+      border: 1px solid rgba(0, 255, 239, 0.2);
+      border-radius: 6px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 239, 0.5), transparent);
+    }
+
+    .game-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 255, 239, 0.2);
+      border: 1px solid rgba(0, 255, 239, 0.4);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes scan-line {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-scan-line {
+      animation: scan-line 4s linear infinite;
+    }
+
+    .bg-gradient-animate {
+      background-size: 400% 400%;
+      animation: shimmer 8s ease-in-out infinite;
+    }
+
+    .neumorphic-btn {
+      background: var(--bg-surface);
+      border: 1px solid rgba(0, 255, 239, 0.3);
+      border-radius: 100px;
+      padding: 10px 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .neumorphic-btn:active {
+      transform: translateY(2px);
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .neumorphic-btn:focus {
+      outline: 2px solid var(--neon-cyan);
+      outline-offset: 2px;
+    }
+
+    .bg-orbit {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--neon-cyan);
+      top: -100px;
+      left: -100px;
+      animation-direction: normal;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--neon-purple);
+      bottom: -50px;
+      right: -50px;
+      animation-direction: reverse;
+    }
+
+    .orb-3 {
+      width: 200px;
+      height: 200px;
+      background: var(--neon-pink);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-direction: normal;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-pulse-glow {
+        animation: none;
+        opacity: 1;
+      }
+      .animate-float {
+        animation: none;
+      }
+      .bg-gradient-animate {
+        animation: none;
+        background-size: auto;
+      }
+      .scanline::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-neon-pattern min-h-screen">
+
+  <!-- Cursor Follower -->
+  <div class="cursor-follower" id="cursor-follower"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-surface)]/90 backdrop-blur-xl border-b border-[rgba(0,255,239,0.2)]/50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="font-display text-2xl font-bold tracking-tighter" style="color: var(--neon-cyan);">NEONGAMER</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#about" class="nav-link text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors">About</a>
+        <a href="#games" class="nav-link text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors">Games</a>
+        <a href="#stats" class="nav-link text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors">Stats</a>
+        <a href="#contact" class="nav-link text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors">Contact</a>
+      </div>
+      <button id="menu-btn" class="md:hidden flex items-center gap-2 px-4 py-2" aria-label="Open menu">
+        <i data-lucide="menu" class="w-6 h-6 text-[var(--neon-cyan)]"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 top-0 right-0 w-80 h-full bg-[var(--bg-surface)] flex-col justify-center items-center gap-8 pointer-events-visible z-40 opacity-0 scale-90 transition-all duration-500 md:hidden" aria-label="Close menu">
+    <button id="close-menu" class="absolute top-6 right-6 p-2">
+      <i data-lucide="x" class="w-6 h-6 text-[var(--neon-cyan)]"></i>
+    </button>
+    <a href="#about" class="text-2xl font-display font-bold text-[var(--neon-cyan)] hover:text-[var(--neon-pink)] transition-colors">About</a>
+    <a href="#games" class="text-2xl font-display font-bold text-[var(--neon-cyan)] hover:text-[var(--neon-pink)] transition-colors">Games</a>
+    <a href="#stats" class="text-2xl font-display font-bold text-[var(--neon-cyan)] hover:text-[var(--neon-pink)] transition-colors">Stats</a>
+    <a href="#contact" class="text-2xl font-display font-bold text-[var(--neon-cyan)] hover:text-[var(--neon-pink)] transition-colors">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen relative flex items-center justify-center px-6 py-20">
+    <div class="max-w-7xl mx-auto text-center relative">
+      <div class="relative pt-20">
+        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 section-animate">
+          <span class="glow-text" style="color: var(--neon-cyan);">GAMER</span><br>
+          <span class="glow-text" style="color: var(--neon-purple);">PRO</span>
+        </h1>
+        <p class="text-lg md:text-xl text-[var(--text-muted)] max-w-2xl mx-auto mb-10 section-animate delay-100">
+          Elite competitive player · FPS specialist · Streamer
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center section-animate delay-200">
+          <a href="#games" class="btn-px-6 btn-py-3 rounded-full bg-gradient-to-r from-[var(--neon-cyan)] to-[var(--neon-purple)] text-[var(--bg-deeper)] font-medium hover:shadow-lg hover:shadow-[var(--neon-cyan)/50] transition-shadow">
+            View Games
+          </a>
+          <a href="#stats" class="btn-px-6 btn-py-3 rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] font-medium hover:bg-[var(--bg-surface)] transition-colors">
+            View Stats
+          </a>
+        </div>
+        <div class="mt-20 text-[var(--text-muted)] section-animate delay-300">
+          <p class="text-sm">Rank: #4500 🌟</p>
+          <p class="ml-2">Last updated: October 2026</p>
+        </div>
+      </div>
+      <!-- Orbiting orbs -->
+      <div class="orb-1 animate-float"></div>
+      <div class="orb-2 animate-float" style="animation-direction: reverse;"></div>
+      <div class="orb-3 animate-float" style="animation-direction: normal;"></div>
+    </div>
+    <!-- Scanline effect -->
+    <div class="absolute top-0 left-0 right-0 height-1/4 bg-[linear-gradient(to bottom,transparent,rgba(0,0,0,0.3),transparent)] animate-scan-line"></div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="inline-block px-4 py-2 rounded-full bg-[rgba(0,255,239,0.2)] mb-6 text-sm text-[var(--neon-cyan)]">PROFILE</span>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Player Information</h2>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-6">
+            Competitive FPS player with over 5 years of experience in tactical shooters. Currently grinding to reach Radiant rank.
+          </p>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="p-4 rounded-xl bg-[rgba(0,255,239,0.1)] text-center">
+              <p class="text-sm text-[var(--text-muted)]">Main Game</p>
+              <p class="font-display font-bold text-2xl" style="color: var(--neon-cyan);">Valorant</p>
+            </div>
+            <div class="p-4 rounded-xl bg-[rgba(188,19,254,0.1)] text-center">
+              <p class="text-sm text-[var(--text-muted)]">Secondary</p>
+              <p class="font-display font-bold text-2xl" style="color: var(--neon-purple);">CS2</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="rounded-3xl bg-[var(--bg-surface)] overflow-hidden relative">
+            <div class="absolute -inset-6 bg-gradient-to-br from-[rgba(0,255,239,0.15)] to-[rgba(188,19,254,0.15)] blur-xl rounded-4xl opacity-40"></div>
+            <div class="relative z-10">
+              <div class="h-64 rounded-2xl bg-[var(--bg-deeper)] flex items-center justify-center">
+                <p class="text-[var(--text-muted)]">Gamer Tag</p>
+              </div>
+              <img src="https://images.unsplash.com/photo-1620858443413-61361a10cf9c?w=800&h=600&fit=crop" alt="Gamer" class="w-full h-64 object-cover rounded-2xl">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Games Section -->
+  <section id="games" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 rounded-full bg-[var(--bg-surface)]/50 mb-6 text-sm text-[var(--text-muted)]">LIBRARY</span>
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Games Played</h2>
+      </div>
+      <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <!-- Game card 1 -->
+        <div class="profile-card game-card animate-float" style="transition-delay: 0s;">
+          <div class="w-16 h-16 rounded-xl bg-[rgba(0,255,239,0.15)] flex items-center justify-center mb-4">
+            <i data-lucide="controller" class="w-8 h-8 text-[var(--neon-cyan)]"></i>
+          </div>
+          <h3 class="font-display text-xl font-bold mb-2">Valorant</h3>
+          <p class="text-[var(--text-muted)] text-sm">Ranked Mode</p>
+          <div class="mt-2">
+            <span class="text-[var(--neon-cyan)] font-medium">Radiant</span>
+            <span class="text-[var(--text-muted)] ml-2">#4500</span>
+          </div>
+        </div>
+        <!-- Game card 2 -->
+        <div class="profile-card game-card animate-float" style="transition-delay: 0.1s;">
+          <div class="w-16 h-16 rounded-xl bg-[rgba(188,19,254,0.15)] flex items-center justify-center mb-4">
+            <i data-lucide="cpu" class="w-8 h-8 text-[var(--neon-purple)]"></i>
+          </div>
+          <h3 class="font-display text-xl font-bold mb-2">CS2</h3>
+          <p class="text-[var(--text-muted)] text-sm">Competitive Mode</p>
+          <div class="mt-2">
+            <span class="text-[var(--neon-purple)] font-medium">Global Elite</span>
+            <span class="text-[var(--text-muted)] ml-2">#1200</span>
+          </div>
+        </div>
+        <!-- Game card 3 -->
+        <div class="profile-card game-card animate-float" style="transition-delay: 0.2s;">
+          <div class="w-16 h-16 rounded-xl bg-[rgba(255,0,127,0.15)] flex items-center justify-center mb-4">
+            <i data-lucide="headphones" class="w-8 h-8 text-[var(--neon-pink)]"></i>
+          </div>
+          <h3 class="font-display text-xl font-bold mb-2">Apex Legends</h3>
+          <p class="text-[var(--text-muted)] text-sm">Battle Royale</p>
+          <div class="mt-2">
+            <span class="text-[var(--neon-pink)] font-medium">Diamond</span>
+            <span class="text-[var(--text-muted)] ml-2">Badge</span>
+          </div>
+        </div>
+        <!-- Game card 4 -->
+        <div class="profile-card game-card animate-float" style="transition-delay: 0.3s;">
+          <div class="w-16 h-16 rounded-xl bg-[rgba(0,255,239,0.15)] flex items-center justify-center mb-4">
+            <i data-lucide="joystick" class="w-8 h-8 text-[var(--neon-cyan)]"></i>
+          </div>
+          <h3 class="font-display text-xl font-bold mb-2">Overwatch 2</h3>
+          <p class="text-[var(--text-muted)] text-sm">Quick Play</p>
+          <div class="mt-2">
+            <span class="text-[var(--neon-cyan)] font-medium">Top 500</span>
+            <span class="text-[var(--text-muted)] ml-2">Season 24</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section id="stats" class="py-24 md:py-32 bg-[var(--bg-surface)] relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <!-- Stat 1 -->
+        <div class="stat-card">
+          <p class="text-[var(--text-muted)] text-sm mb-2">K/D Ratio</p>
+          <p class="font-display font-bold text-3xl" style="color: var(--neon-cyan);">3.42</p>
+        </div>
+        <!-- Stat 2 -->
+        <div class="stat-card">
+          <p class="text-[var(--text-muted)] text-sm mb-2">Win Rate</p>
+          <p class="font-display font-bold text-3xl" style="color: var(--neon-purple);">67%</p>
+        </div>
+        <!-- Stat 3 -->
+        <div class="stat-card">
+          <p class="text-[var(--text-muted)] text-sm mb-2">Headshot %</p>
+          <p class="font-display font-bold text-3xl" style="color: var(--neon-pink);">24%</p>
+        </div>
+        <!-- Stat 4 -->
+        <div class="stat-card">
+          <p class="text-[var(--text-muted)] text-sm mb-2">Hours Played</p>
+          <p class="font-display font-bold text-3xl" style="color: var(--neon-green);">842h</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="inline-block px-4 py-2 rounded-full bg-[rgba(0,255,239,0.2)] mb-6 text-sm text-[var(--neon-cyan)]">CONTACT</span>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Let's Connect</h2>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-8">
+            Looking for a duo partner or team opportunities? Hit me up on Discord or follow me on Twitch.
+          </p>
+          <form class="space-y-4 max-w-md">
+            <div>
+              <input type="text" placeholder="Discord Username" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[rgba(0,255,239,0.3)] text-[var(--text-primary)] transition-colors" required>
+            </div>
+            <div>
+              <input type="email" placeholder="Email" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[rgba(0,255,239,0.3)] text-[var(--text-primary)] transition-colors" required>
+            </div>
+            <button type="submit" class="btn-neon btn-neon-cyan w-full">Send Request</button>
+          </form>
+        </div>
+        <div class="space-y-8">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[rgba(0,255,239,0.2)] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="message-circle" class="w-5 h-5 text-[var(--neon-cyan)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Discord</p>
+              <p class="text-[var(--text-muted)]">NeonGamer#1234</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[rgba(188,19,254,0.2)] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="video" class="w-5 h-5 text-[var(--neon-purple)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Twitch</p>
+              <p class="text-[var(--text-muted)]">twitch.tv/neongamer</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[rgba(255,0,127,0.2)] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="link" class="w-5 h-5 text-[var(--neon-pink)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Twitter</p>
+              <p class="text-[var(--text-muted)]">@NeonGamerPro</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 bg-[var(--bg-surface)] border-t border-[rgba(0,255,239,0.2)]/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <a href="#" class="font-display text-2xl font-bold" style="color: var(--neon-cyan);">NEONGAMER</a>
+        <p class="text-[var(--text-muted)] text-sm">2024 • All Rights Reserved</p>
+        <div class="flex gap-6">
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors" aria-label="Discord">
+            <i data-lucide="discord" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--neon-purple)] transition-colors" aria-label="Twitch">
+            <i data-lucide="twitch" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--neon-pink)] transition-colors" aria-label="Twitter">
+            <i data-lucide="twitter" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors" aria-label="GitHub">
+            <i data-lucide="git-hub" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cursor Follower JS -->
+  <script>
+    const cursorFollower = document.getElementById('cursor-follower');
+
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      cursorFollower.style.left = x + 'px';
+      cursorFollower.style.top = y + 'px';
+    });
+  </script>
+
+  <!-- Mobile Menu Toggle -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('opacity-0', 'scale-90');
+      mobileMenu.classList.add('opacity-100', 'scale-100');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('opacity-0', 'scale-90');
+      mobileMenu.classList.remove('opacity-100', 'scale-100');
+    });
+  </script>
+
+  <!-- Scroll Reveal -->
+  <script>
+    const revealElements = document.querySelectorAll('.section-animate');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+
+  <!-- Portfolio Filter -->
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('#portfolio-gallery > div');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+
+        portfolioItems.forEach(item => {
+          const categories = item.dataset.category;
+
+          if (filter === 'all' || categories.includes(filter)) {
+            item.style.display = 'block';
+            setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'scale(1)';
+            }, 100);
+          } else {
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+              item.style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+
+    filterBtns[0].classList.add('active');
+  </script>
+
+  <!-- Form Validation -->
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      const inputs = form.querySelectorAll('input[required], textarea[required]');
+      let valid = true;
+
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          valid = false;
+          input.style.borderColor = '#ef4444';
+        } else {
+          input.style.borderColor = 'var(--neon-cyan)';
+        }
+      });
+
+      if (!valid) {
+        e.preventDefault();
+        alert('Please fill in all required fields.');
+      }
+    });
+
+    form.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.style.borderColor = 'var(--neon-cyan)';
+      });
+      input.addEventListener('blur', () => {
+        if (!input.value.trim()) {
+          input.style.borderColor = 'rgba(0,255,239,0.3)';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

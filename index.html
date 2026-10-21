@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Studio | Creative Technology Agency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.293.0/dist/ionicons.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #020205;
+      --bg-surface: #0a0a12;
+      --accent-cyan: #00d4aa;
+      --accent-purple: #a855f7;
+      --accent-pink: #f472b6;
+      --text-primary: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-subtle: #1e293b;
+      --gradient-1: linear-gradient(135deg, #00d4aa, #0088a9);
+      --gradient-2: linear-gradient(135deg, #a855f7, #d946ef);
+      --gradient-3: linear-gradient(135deg, #f472b6, #ec4899);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .bg-pattern {
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 170, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168, 85, 247, 0.12), transparent);
+    }
+
+    .shape {
+      border-radius: 50%;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-1);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .card-hover {
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 212, 170, 0.25), 
+                  0 0 0 1px rgba(0, 212, 170, 0.1);
+    }
+
+    .btn-press:active {
+      transform: scale(0.96);
+      transition: transform 0.1s ease;
+    }
+
+    .filter-btn {
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn.active {
+      background: var(--gradient-1);
+      color: var(--bg-dark);
+    }
+
+    .filter-btn:hover:not(.active) {
+      background: rgba(0, 212, 170, 0.2);
+      color: var(--accent-cyan);
+    }
+
+    .stat-number {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-input {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
+    }
+
+    .section-animate {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .section-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .section-animate {
+        transition: opacity 0.1s ease, transform 0.1s ease;
+      }
+    }
+  </style>
+</head>
+<body class="bg-pattern min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-surface)]/90 backdrop-blur-xl border-b border-[var(--border-subtle)]/50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="font-display text-2xl font-bold tracking-tighter" style="color: var(--accent-cyan);">AURA</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#services" class="nav-link text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Services</a>
+        <a href="#portfolio" class="nav-link text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Portfolio</a>
+        <a href="#about" class="nav-link text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About</a>
+        <a href="#contact" class="nav-link text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Contact</a>
+      </div>
+      <button id="menu-btn" class="md:hidden flex items-center gap-2 px-4 py-2" aria-label="Open menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="fixed inset-0 top-0 right-0 w-80 h-full bg-[var(--bg-surface)] flex-col justify-center items-center gap-8 pointer-events-visible z-40 opacity-0 scale-90 transition-all duration-500 md:hidden" aria-label="Close menu">
+    <button id="close-menu" class="absolute top-6 right-6 p-2" aria-label="Close menu">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <a href="#services" class="text-2xl font-display font-bold text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] transition-colors">Services</a>
+    <a href="#portfolio" class="text-2xl font-display font-bold text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] transition-colors">Portfolio</a>
+    <a href="#about" class="text-2xl font-display font-bold text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] transition-colors">About</a>
+    <a href="#contact" class="text-2xl font-display font-bold text-[var(--accent-cyan)] hover:text-[var(--accent-purple)] transition-colors">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen relative flex items-center justify-center px-6 py-20">
+    <div class="max-w-7xl mx-auto text-center relative">
+      <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tight mb-6 section-animate">
+        Crafting<br>
+        <span style="color: var(--accent-cyan);">Digital</span><br>
+        Experiences
+      </h1>
+      <p class="text-lg md:text-xl text-[var(--text-muted)] max-w-2xl mx-auto mb-10 section-animate delay-100">
+        We build memorable brands and digital products for the modern era. From strategy to execution, we turn vision into reality.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center section-animate delay-200">
+        <a href="#services" class="btn-px-6 btn-py-3 rounded-full bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-purple)] text-[var(--bg-dark)] font-medium hover:shadow-lg hover:shadow-[var(--accent-cyan)/50] transition-shadow">
+          Our Services
+        </a>
+        <a href="#portfolio" class="btn-px-6 btn-py-3 rounded-full border-2 border-[var(--text-muted)] text-[var(--text-primary)] font-medium hover:bg-[var(--bg-surface)] transition-colors">
+          View Work
+        </a>
+      </div>
+      <div class="mt-20 text-[var(--text-muted)] section-animate delay-300">
+        <p class="text-sm">Aura Studio • Creative Technology Agency</p>
+        <p class="ml-2">2024</p>
+      </div>
+    </div>
+    <!-- Abstract shapes -->
+    <div class="absolute -bottom-6 -left-6 w-64 h-64 bg-[var(--accent-cyan)]/10 rounded-full blur-xl animate-pulse-slow"></div>
+    <div class="absolute -top-6 -right-6 w-40 h-40 bg-[var(--accent-purple)]/10 rounded-full blur-xl animate-pulse-slow" style="animation-direction: reverse;"></div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 rounded-full bg-[var(--bg-surface)]/50 mb-6 text-sm text-[var(--text-muted)]">What We Do</span>
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Transform Your Vision</h2>
+        <p class="text-[var(--text-muted)] max-w-2xl mx-auto">From branding to deployment, we deliver end-to-end digital solutions that drive results and elevate your presence.
+        </p>
+      </div>
+      <div grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Card 1 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.1s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-cyan)/10] flex items-center justify-center mb-6">
+            <i data-lucide="star" class="w-6 h-6 text-[var(--accent-cyan)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">Strategic Branding</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">We craft distinctive brand identities that resonate with your audience and stand the test of time.
+          </p>
+        </div>
+        <!-- Card 2 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.15s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-purple)/10] flex items-center justify-center mb-6">
+            <i data-lucide="palette" class="w-6 h-6 text-[var(--accent-purple)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">Web Development</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">Custom web applications and digital experiences built with modern technologies and clean code.
+          </p>
+        </div>
+        <!-- Card 3 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.2s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-pink)/10] flex items-center justify-center mb-6">
+            <i data-lucide="zap" class="w-6 h-6 text-[var(--accent-pink)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">Digital Marketing</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">Growth strategies and campaigns that convert visitors into loyal customers.
+          </p>
+        </div>
+        <!-- Card 4 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.15s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-cyan)/10] flex items-center justify-center mb-6">
+            <i data-lucide="monitor" class="w-6 h-6 text-[var(--accent-cyan)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">Product Design</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">User-centered design thinking that creates intuitive and engaging experiences.
+          </p>
+        </div>
+        <!-- Card 5 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.2s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-purple)/10] flex items-center justify-center mb-6">
+            <i data-lucide="brain" class="w-6 h-6 text-[var(--accent-purple)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">AI & Automation</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">Intelligent solutions that streamline operations and enhance user experiences.
+          </p>
+        </div>
+        <!-- Card 6 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.25s;">
+          <div class="w-12 h-12 rounded-xl bg-[var(--accent-pink)/10] flex items-center justify-center mb-6">
+            <i data-lucide="layers" class="w-6 h-6 text-[var(--accent-pink)]"></i>
+          </div>
+          <h3 class="font-display text-2xl font-bold mb-3">Creative Strategy</h3>
+          <p class="text-[var(--text-muted)] leading-relaxed">Bold concepts and creative direction that differentiate your brand in crowded markets.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 rounded-full bg-[var(--bg-surface)]/50 mb-6 text-sm text-[var(--text-muted)]">Featured Work</span>
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Selected Projects</h2>
+        <p class="text-[var(--text-muted)] max-w-2xl mx-auto">A curated selection of our most impactful collaborations across industries.
+        </p>
+      </div>
+      <!-- Filter Buttons -->
+      <div class="mb-12 text-center section-animate" style="transition-delay: 0.1s;">
+        <button class="filter-btn px-4 py-2 rounded-full bg-transparent text-[var(--text-primary)] hover:text-[var(--accent-cyan)] transition-all mr-2" data-filter="all">All Projects</button>
+        <button class="filter-btn px-4 py-2 rounded-full bg-transparent text-[var(--text-primary)] hover:text-[var(--accent-cyan)] transition-all mr-2" data-filter="web">Web Apps</button>
+        <button class="filter-btn px-4 py-2 rounded-full bg-transparent text-[var(--text-primary)] hover:text-[var(--accent-cyan)] transition-all mr-2" data-filter="brand">Branding</button>
+        <button class="filter-btn px-4 py-2 rounded-full bg-transparent text-[var(--text-primary)] hover:text-[var(--accent-cyan)] transition-all" data-filter="product">Product Design</button>
+      </div>
+      <!-- Gallery Grid -->
+      <div grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" id="portfolio-gallery">
+        <!-- Project 1 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="web" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-cyan)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Aurora Dashboard</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">SaaS Analytics Platform</h4>
+            <p class="text-[var(--text-muted)] text-sm">Dashboard redesign with real-time analytics and customizable widgets.</p>
+          </div>
+        </div>
+        <!-- Project 2 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="brand" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-purple)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Lumen Brand</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">Identity System</h4>
+            <p class="text-[var(--text-muted)] text-sm">Complete rebranding for a sustainable tech startup.</p>
+          </div>
+        </div>
+        <!-- Project 3 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="product" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-pink)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Nexus Labs</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">Mobile Experience</h4>
+            <p class="text-[var(--text-muted)] text-sm">Consumer app redesign focusing on intuitive onboarding.</p>
+          </div>
+        </div>
+        <!-- Project 4 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="web" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-cyan)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Wave Finance</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">FinTech Dashboard</h4>
+            <p class="text-[var(--text-muted)] text-sm">Secure financial analytics with custom visualizations.</p>
+          </div>
+        </div>
+        <!-- Project 5 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="brand" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-purple)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Vivid Studios</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">Creative Portfolio</h4>
+            <p class="text-[var(--text-muted)] text-sm">Agency website with interactive elements and smooth animations.</p>
+          </div>
+        </div>
+        <!-- Project 6 -->
+        <div class="rounded-2xl bg-[var(--bg-surface)] overflow-hidden border border-[var(--border-subtle)]/50 filter-btn" data-category="product" style="transition: transform 0.3s ease;">
+          <div class="relative h-64">
+            <div class="absolute inset-0 bg-gradient-to-b from-[var(--accent-pink)]/60 to-transparent"></div>
+            <h3 class="absolute bottom-0 left-0 right-2 px-4 py-3 text-white font-medium">Echo Social</h3>
+          </div>
+          <div class="p-6">
+            <h4 class="font-display text-xl font-bold mb-2">Social Platform</h4>
+            <p class="text-[var(--text-muted)] text-sm">Community features and engagement tools redesign.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 md:py-32 bg-[var(--bg-surface)] relative">
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="inline-block px-4 py-2 rounded-full bg-[var(--accent-cyan)/10] mb-6 text-sm text-[var(--accent-cyan)]">About Us</span>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Built on Passion, Driven by Tech</h2>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-6">Aura Studio was founded in 2024 with a mission to bridge the gap between creative vision and technical excellence. Our team of designers, developers, and strategists works collaboratively to deliver digital experiences that not only look stunning but solve real business problems.
+          </p>
+          <p class="text-[var(--text-muted)] leading-relaxed">From startups to established enterprises, we partner with businesses that dare to be different. Our portfolio spans industries from fintech to fashion, each project approached with fresh perspective and meticulous attention to detail.
+          </p>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="p-4 rounded-xl bg-[var(--bg-dark)]/50 text-center">
+              <p class="text-sm text-[var(--text-muted)]">Years of Experience</p>
+              <p class="font-display font-bold text-2xl">8+</p>
+            </div>
+            <div class="p-4 rounded-xl bg-[var(--bg-dark)]/50 text-center">
+              <p class="text-sm text-[var(--text-muted)]">Projects Completed</p>
+              <p class="font-display font-bold text-2xl">147+</p>
+            </div>
+            <div class="p-4 rounded-xl bg-[var(--bg-dark)]/50 text-center">
+              <p class="text-sm text-[var(--text-muted)]">Awards Won</p>
+              <p class="font-display font-bold text-2xl">12+</p>
+            </div>
+            <div class="p-4 rounded-xl bg-[var(--bg-dark)]/50 text-center">
+              <p class="text-sm text-[var(--text-muted)]">Client Satisfaction</p>
+              <p class="font-display font-bold text-2xl">98%</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="rounded-3xl bg-[var(--bg-dark)] overflow-hidden relative">
+            <div class="absolute -inset-6 bg-gradient-to-br from-[var(--accent-cyan)]/20 to-[var(--accent-purple)/20] blur-xl rounded-4xl opacity-30"></div>
+            <div class="relative z-10">
+              <div class="h-64 rounded-2xl bg-[var(--bg-dark)] flex items-center justify-center">
+                <p class="text-[var(--text-muted)]">Studio Interior</p>
+              </div>
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop" alt="Studio" class="w-full h-64 object-cover rounded-2xl">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-2 rounded-full bg-[var(--bg-surface)]/50 mb-6 text-sm text-[var(--text-muted)]">Client Stories</span>
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">What Clients Say</h2>
+      </div>
+      <div grid-cols-1 gap-6 md:grid-cols-3" id="testimonials">
+        <!-- Testimonial 1 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.1s;">
+          <div class="w-10 h-10 rounded-full bg-[var(--accent-cyan)/10] flex items-center justify-center mb-6">
+            <i data-lucide="star" class="w-5 h-5 text-[var(--accent-cyan)]"></i>
+          </div>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-6">"Aura Studio transformed our digital presence. Their attention to detail and creative approach exceeded all our expectations. The new website has already increased our engagement by 45%."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Client" class="w-10 h-10 rounded-full object-cover">
+            <div>
+              <p class="font-display font-medium">Sarah Chen</p>
+              <p class="text-[var(--text-muted)]">CEO, Lumina Labs</p>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial 2 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.15s;">
+          <div class="w-10 h-10 rounded-full bg-[var(--accent-purple)/10] flex items-center justify-center mb-6">
+            <i data-lucide="star" class="w-5 h-5 text-[var(--accent-purple)]"></i>
+          </div>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-6">"Working with Aura Studio was a game-changer for our startup. They understood our vision immediately and delivered a product that truly represents who we are."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Client" class="w-10 h-10 rounded-full object-cover">
+            <div>
+              <p class="font-display font-medium">Marcus Thompson</p>
+              <p class="text-[var(--text-muted)]">CTO, Nova Systems</p>
+            </div>
+          </div>
+        </div>
+        <!-- Testimonial 3 -->
+        <div class="card-hover rounded-2xl bg-[var(--bg-surface)] p-8 border border-[var(--border-subtle)]/50 section-animate" style="transition-delay: 0.2s;">
+          <div class="w-10 h-10 rounded-full bg-[var(--accent-pink)/10] flex items-center justify-center mb-6">
+            <i data-lucide="star" class="w-5 h-5 text-[var(--accent-pink)]"></i>
+          </div>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-6">"The team's strategic insights and technical expertise helped us pivot our entire brand strategy. They're not just a vendor - they're true partners in growth."</p>
+          <div class="flex items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="Client" class="w-10 h-10 rounded-full object-cover">
+            <div>
+              <p class="font-display font-medium">Elena Rodriguez</p>
+              <p class="text-[var(--text-muted)]">Founder, Aether Studios</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 md:py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="inline-block px-4 py-2 rounded-full bg-[var(--accent-cyan)/10] mb-6 text-sm text-[var(--accent-cyan)]">Get in Touch</span>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Let's Create Something Amazing</h2>
+          <p class="text-[var(--text-muted)] leading-relaxed mb-8">Ready to bring your project to life? We'd love to hear about your vision and discuss how we can help. Fill out the form and we'll get back to you within 24 hours.
+          </p>
+          <form class="space-y-4">
+            <div>
+              <input type="text" placeholder="Your Name" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[var(--border-subtle)]/50 text-[var(--text-primary)] transition-colors" required>
+            </div>
+            <div>
+              <input type="email" placeholder="Your Email" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[var(--border-subtle)]/50 text-[var(--text-primary)] transition-colors" required>
+            </div>
+            <div>
+              <input type="text" placeholder="Subject" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[var(--border-subtle)]/50 text-[var(--text-primary)] transition-colors" required>
+            </div>
+            <div>
+              <textarea rows="5" placeholder="Your Message" class="form-input w-full rounded-xl px-5 py-4 bg-[var(--bg-dark)] border border-[var(--border-subtle)]/50 text-[var(--text-primary)] transition-colors resize-none" required></textarea>
+            </div>
+            <button type="submit" class="btn-px-6 btn-py-3 rounded-full bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-purple)] text-[var(--bg-dark)] font-medium hover:shadow-lg hover:shadow-[var(--accent-cyan)/30] transition-shadow">
+              Send Message
+            </button>
+          </form>
+        </div>
+        <div class="space-y-8">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[var(--accent-cyan)/10] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="map-pin" class="w-5 h-5 text-[var(--accent-cyan)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Location</p>
+              <p class="text-[var(--text-muted)]">Portland, OR, USA</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[var(--accent-purple)/10] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="phone" class="w-5 h-5 text-[var(--accent-purple)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Phone</p>
+              <p class="text-[var(--text-muted)]">+1 (555) 123-4567</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[var(--accent-pink)/10] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="mail" class="w-5 h-5 text-[var(--accent-pink)]"></i>
+            </div>
+            <div>
+              <p class="font-display font-medium">Email</p>
+              <p class="text-[var(--text-muted)]">hello@aurastudio.dev</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 bg-[var(--bg-surface)] border-t border-[var(--border-subtle)]/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <a href="#" class="font-display text-2xl font-bold" style="color: var(--accent-cyan);">AURA</a>
+        <p class="text-[var(--text-muted)] text-sm">2024 Aura Studio. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--accent-cyan)] transition-colors" aria-label="Twitter">
+            <i data-lucide="twitter" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--accent-cyan)] transition-colors" aria-label="LinkedIn">
+            <i data-lucide="linkedin" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--accent-cyan)] transition-colors" aria-label="Dribbble">
+            <i data-lucide="dribbble" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="text-[var(--text-muted)] hover:text-[var(--accent-cyan)] transition-colors" aria-label="GitHub">
+            <i data-lucide="git-hub" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    // Lucide icons replacement
+    lucide.createIcons();
+  </script>
+
+  <script>
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('opacity-0', 'scale-90');
+      mobileMenu.classList.add('opacity-100', 'scale-100');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('opacity-0', 'scale-90');
+      mobileMenu.classList.remove('opacity-100', 'scale-100');
+    });
+  </script>
+
+  <script>
+    // Scroll Reveal with IntersectionObserver
+    const revealElements = document.querySelectorAll('.section-animate');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+
+  <script>
+    // Portfolio Filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('#portfolio-gallery > div');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active state
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+
+        portfolioItems.forEach(item => {
+          const categories = item.dataset.category;
+
+          if (filter === 'all' || categories.includes(filter)) {
+            item.style.display = 'block';
+            setTimeout(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'scale(1)';
+            }, 100);
+          } else {
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+              item.style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+
+    // Set initial active state
+    filterBtns[0].classList.add('active');
+  </script>
+
+  <script>
+    // Form validation
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      const inputs = form.querySelectorAll('input[required], textarea[required]);
+      let valid = true;
+
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          valid = false;
+          input.style.borderColor = '#ef4444';
+        } else {
+          input.style.borderColor = 'var(--accent-cyan)';
+        }
+      });
+
+      if (!valid) {
+        e.preventDefault();
+        alert('Please fill in all required fields.');
+      }
+    });
+
+    // Real-time validation
+    form.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.style.borderColor = 'var(--accent-cyan)';
+      });
+      input.addEventListener('blur', () => {
+        if (!input.value.trim()) {
+          input.style.borderColor = 'var(--border-subtle)';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
